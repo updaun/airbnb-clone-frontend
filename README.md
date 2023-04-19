@@ -11,3 +11,9 @@ npm i @chakra-ui/react @emotion/react @emotion/styled framer-motion
 ```
 npm i react-router-dom
 ```
+
+- install react-icons
+
+```
+npm install react-icons --save
+```
