@@ -18,7 +18,7 @@ export default function Room() {
                     <Text as="b" noOfLines={1} fontSize={"md"}>
                         Ganggu-myeon, Yeongdeok-gun, 경상북도, 한국
                     </Text>
-                    <HStack spacing={1}>
+                    <HStack spacing={1} alignItems="center">
                         <FaStar size={15} />
                         <Text>5.0</Text>
                     </HStack>
