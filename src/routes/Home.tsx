@@ -30,7 +30,7 @@ export default function Home() {
             xl: "repeat(4, 1fr)",
             "2xl": "repeat(5, 1fr)"
         }}>
-            {isLoading ? (
+            { isLoading ? (
                 <>
                     <RoomSkeleton />
                     <RoomSkeleton />
@@ -45,6 +45,8 @@ export default function Home() {
                 </>) : null}
             {data?.map((room) => (
                 <Room
+                    key={room.pk}
+                    pk={room.pk}
                     imageUrl={"https://a0.muscache.com/im/pictures/prohost-api/Hosting-607458038229062130/original/1e20dfc7-ea12-44b2-a837-2bdcd8502133.jpeg?im_w=720"}
                     name={room.name}
                     rating={room.rating}
