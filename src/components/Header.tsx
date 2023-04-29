@@ -2,6 +2,7 @@ import { Box, Button, HStack, IconButton, LightMode, Stack, useColorMode, useCol
 import { FaAirbnb, FaMoon, FaSun } from "react-icons/fa";
 import LoginModal from "./LoginModal";
 import SignUpModal from "./SignUpModal";
+import { Link } from "react-router-dom";
 
 export default function Header() {
     const { isOpen:isLoginOpen, onClose:onLoginClose, onOpen:onLoginOpen } = useDisclosure();
@@ -12,7 +13,9 @@ export default function Header() {
     return (
         <Stack justifyContent={"space-between"} alignItems="center" py={5} px={40} direction={{sm:"column", md:"row"}} spacing={{ sm:4, md:0}} borderBottomWidth={1}> 
             <Box color={logoColor}>
-                <FaAirbnb size={"48"} />
+                <Link to={"/"}>
+                    <FaAirbnb size={"48"} />
+                </Link>
             </Box>
             <HStack spacing={2}>
                 {/* <IconButton onClick={toggleColorMode} variant="ghost" aria-label="Toggle dark mode" icon={colorMode === "light" ? <FaMoon/> : <FaSun/> } /> */}
