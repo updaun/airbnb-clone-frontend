@@ -10,40 +10,38 @@ import {
     ModalContent,
     ModalHeader,
     ModalOverlay,
+    Text,
     VStack,
     useDisclosure
 } from "@chakra-ui/react";
 import { FaLock, FaUserNinja } from "react-icons/fa";
 import SocialLogin from "./SocialLogin";
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 
 interface LoginModalProps {
     isOpen: boolean;
     onClose: () => void;
 }
 
+interface IForm {
+    username: string;
+    password: string;
+}
+
 export default function LoginModal({isOpen, onClose}:LoginModalProps) {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const onChange = (event:React.SyntheticEvent<HTMLInputElement>) => {
-        const { name, value } = event.currentTarget;
-        if (name === "username") {
-            setUsername(value);
-        } else if (name === "password") {
-            setPassword(value);
-        }
-    }
-    const onSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        
-    }
+    const { register, handleSubmit, formState: {errors} } = useForm<IForm>();
+    const onSubmit = (data:IForm) => {
+        console.log("submitted");
+        console.log(data);
+    };
     return (
         <Modal motionPreset="slideInBottom" onClose={onClose} isOpen={isOpen}>
         <ModalOverlay />
         <ModalContent>
             <ModalHeader>Log in</ModalHeader>
             <ModalCloseButton />
-            <ModalBody as="form" onSubmit={onSubmit as any}>
+            <ModalBody as="form" onSubmit={handleSubmit(onSubmit)}>
                 <VStack>
                     <InputGroup>
                         <InputLeftElement children={
@@ -51,7 +49,9 @@ export default function LoginModal({isOpen, onClose}:LoginModalProps) {
                                 <FaUserNinja />
                             </Box>
                         } />
-                            <Input required name="username" onChange={onChange} value={username} variant={"filled"} placeholder="Username" />
+                            <Input isInvalid={Boolean(errors.username?.message)} {...register("username", {
+                                required: "Please write a username",
+                            })} variant={"filled"} placeholder="Username" />
                     </InputGroup>
                     <InputGroup>
                         <InputLeftElement children={
@@ -59,7 +59,9 @@ export default function LoginModal({isOpen, onClose}:LoginModalProps) {
                                 <FaLock />
                             </Box>
                         } />
-                        <Input required name="password" onChange={onChange} value={password} variant={"filled"} type="password" placeholder="Password" />
+                            <Input isInvalid={Boolean(errors.username?.message)} {...register("password", {
+                                required: "Please write a password",
+                            })} variant={"filled"} type="password" placeholder="Password" />
                     </InputGroup>
                 </VStack>
                 <Button type="submit" mt={4} colorScheme={"red"} w={"100%"}>Log in</Button>
