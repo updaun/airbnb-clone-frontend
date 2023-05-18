@@ -33,7 +33,7 @@ interface IForm {
 }
 
 export default function LoginModal({isOpen, onClose}:LoginModalProps) {
-    const { register, handleSubmit, formState: { errors } } = useForm<IForm>();
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<IForm>();
     const toast = useToast();
     const queryClient = useQueryClient();
     const mutation = useMutation(usernameLogIn, {
@@ -47,6 +47,7 @@ export default function LoginModal({isOpen, onClose}:LoginModalProps) {
             });
             onClose();
             queryClient.refetchQueries(["me"]);
+            reset();
         },
         onError: (error) => {
             console.log("mutation error");
@@ -83,7 +84,10 @@ export default function LoginModal({isOpen, onClose}:LoginModalProps) {
                                 required: "Please write a password",
                             })} variant={"filled"} type="password" placeholder="Password" />
                         </InputGroup>
-                </VStack>
+                    </VStack>
+                    {mutation.isError ? (
+                        <Text color="red.500" textAlign={"center"} fontSize={"sm"}>Username or Password are wrong</Text>
+                        ) : null}
                 <Button isLoading={mutation.isLoading} type="submit" mt={4} colorScheme={"red"} w={"100%"}>Log in</Button>
                 <SocialLogin/>
             </ModalBody>

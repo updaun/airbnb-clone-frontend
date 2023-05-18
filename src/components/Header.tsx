@@ -1,11 +1,12 @@
-import { Avatar, Box, Button, HStack, IconButton, LightMode, Menu, MenuButton, MenuItem, MenuList, Stack, useColorMode, useColorModeValue, useDisclosure, useToast } from "@chakra-ui/react";
+import { Avatar, Box, Button, HStack, IconButton, LightMode, Menu, MenuButton, MenuItem, MenuList, Stack, ToastId, useColorMode, useColorModeValue, useDisclosure, useToast } from "@chakra-ui/react";
 import { FaAirbnb, FaMoon, FaSun } from "react-icons/fa";
 import LoginModal from "./LoginModal";
 import SignUpModal from "./SignUpModal";
 import { Link } from "react-router-dom";
 import useUser from "../lib/useUser";
 import { logOut } from "../routes/api";
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useRef } from "react";
 
 export default function Header() {
     const { userLoading, isLoggedIn, user} = useUser();
@@ -16,21 +17,29 @@ export default function Header() {
     const Icon = useColorModeValue(FaMoon, FaSun);
     const toast = useToast();
     const queryClient = useQueryClient()
-    const onLogOut = async () => {
-        const toastId = toast({
+    const toastId = useRef<ToastId>();
+    const mutation = useMutation(logOut, {
+        onMutate: () => {
+            toastId.current = toast({
             title: "Login out...",
             description: "Sad to see you go...",
             status: "loading",
             position: "bottom-right",
         });
-        await logOut();
-        queryClient.refetchQueries(["me"]);
-        toast.update(toastId, {
-            status: "success",
-            title: "Done!",
-            description: "See you later!",
-        });
-        
+        },
+        onSuccess: (data) => {
+            if(toastId.current) {
+                queryClient.refetchQueries(["me"]);
+                toast.update(toastId.current, {
+                status: "success",
+                title: "Done!",
+                description: "See you later!",
+            });
+            }
+        }
+    })
+    const onLogOut = async () => {
+        mutation.mutate();
     }
     return (
         <Stack justifyContent={"space-between"} alignItems="center" py={5} px={40} direction={{sm:"column", md:"row"}} spacing={{ sm:4, md:0}} borderBottomWidth={1}> 
