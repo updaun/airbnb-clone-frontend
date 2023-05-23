@@ -3,8 +3,13 @@ import HostOnlyPage from "../components/HostOnlyPage";
 import ProtectedPage from "../components/ProtectedPage";
 import useHostOnlyPage from "../components/useHostOnlyPage";
 import { FaBed, FaMoneyBill, FaToilet } from "react-icons/fa";
+import { useQueries, useQuery } from "@tanstack/react-query";
+import { getAmenities, getCategories } from "./api";
+import { IAmenity, ICategory } from "../types";
 
 export default function UploadRoom() {
+    const { data:amenities, isLoading:isAmenitiesLoading } = useQuery<IAmenity[]>(["amenities"], getAmenities);
+    const { data:categories, isLoading:isCategoriesLoading} = useQueries<ICategory[]>(["categories"], getCategories);
     useHostOnlyPage();
     return (
         <ProtectedPage>
@@ -66,12 +71,16 @@ export default function UploadRoom() {
                         </FormControl>
                         <FormControl>
                             <FormLabel>Kind of room</FormLabel>
-                            <Select placeholder="Choose a kind"></Select>
+                            <Select placeholder="Choose a kind">
                             <option value="entire_place">Entire Place</option>
                             <option value="private_room">Private Room</option>
                             <option value="shared_room">Shared Room</option>
+                            </Select>
+                            <FormLabel>Category</FormLabel>
+                            <Select placeholder="Choose a kind">
                             
-                            <FormHelperText>What kind of room are you renting?</FormHelperText>
+                            </Select>
+                            <FormHelperText>What category describes your room?</FormHelperText>
                         </FormControl>
                     </VStack>
                 </Container>
