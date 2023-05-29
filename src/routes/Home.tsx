@@ -33,7 +33,7 @@ export default function Home() {
                 <Room
                     key={room.pk}
                     pk={room.pk}
-                    imageUrl={"https://a0.muscache.com/im/pictures/prohost-api/Hosting-607458038229062130/original/1e20dfc7-ea12-44b2-a837-2bdcd8502133.jpeg?im_w=720"}
+                    imageUrl={room.photos[0]?.file}
                     name={room.name}
                     rating={room.rating}
                     city={room.city}
