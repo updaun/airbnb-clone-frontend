@@ -95,3 +95,9 @@ export const uploadRoom = (variables:IUploadRoomVariables) => instance.post(`roo
         "X-CSRFToken": Cookie.get("csrftoken") || "",
     },
 }).then((response) => response.data);
+
+export const getUploadURL = () => instance.post(`medias/photos/get-url`, null, {
+    headers: {
+        "X-CSRFToken": Cookie.get("csrftoken") || "",
+    },
+}).then((response) => response.data);
