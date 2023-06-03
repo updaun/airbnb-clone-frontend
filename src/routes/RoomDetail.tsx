@@ -1,14 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 import { getRoom, getRoomReviews } from "./api";
 import { IReview, IRoomDetail } from "../types";
 import { Avatar, Box, Container, Grid, GridItem, HStack, Heading, Image, Skeleton, Text, VStack } from "@chakra-ui/react";
 import { FaStar } from "react-icons/fa";
+import { useState } from "react";
 
 export default function RoomDetail() {
     const { roomPk } = useParams();
     const { isLoading, data } = useQuery<IRoomDetail>(["rooms", roomPk], getRoom)
     const {data:reviewsData, isLoading: isReivewsLoading} = useQuery<IReview[]>(["rooms", roomPk, "reviews"], getRoomReviews)
+    const [dates, setDates] = useState<Date[] | undefined>();
+    const handleDateChange = (value: any) => {
+        setDates(value);
+    };
     return (
         <Box
             mt={10}
@@ -46,6 +53,29 @@ export default function RoomDetail() {
                     </GridItem>
                 ))}
             </Grid>
+
+            <Grid gap={20} templateColumns={"2fr 1fr"} maxW="container.lg">
+                <Box>
+                    <HStack justifyContent={"space-between"} mt={10}>
+                            
+                    </HStack>
+                    <Box mt={10}>
+
+                    </Box>
+                </Box>
+                <Box pt={10}>
+                    <Calendar
+                        onChange={handleDateChange}
+                        prev2Label={null}
+                        next2Label={null}
+                        minDetail="month"
+                        minDate={new Date()}
+                        maxDate={new Date(Date.now() + (60*60*24*7*4*6*1000))}
+                        selectRange />
+                </Box>
+            </Grid>
+
+
             <HStack width={"40%"} justifyContent={"space-between"} mt={10}>
                 <VStack alignItems={"flex-start"}>
                 <Skeleton isLoaded={!isLoading} height={"30px"}>
