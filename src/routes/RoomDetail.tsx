@@ -6,7 +6,7 @@ import { getRoom, getRoomReviews } from "./api";
 import { IReview, IRoomDetail } from "../types";
 import { Avatar, Box, Container, Grid, GridItem, HStack, Heading, Image, Skeleton, Text, VStack } from "@chakra-ui/react";
 import { FaStar } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function RoomDetail() {
     const { roomPk } = useParams();
@@ -16,6 +16,14 @@ export default function RoomDetail() {
     const handleDateChange = (value: any) => {
         setDates(value);
     };
+    useEffect(() => {
+        if (dates) {
+            const [fisrtDate, secondDate] = dates;
+            const [checkIn] = fisrtDate.toISOString().split("T");
+            const [checkOut] = secondDate.toISOString().split("T");
+            console.log(checkIn, checkOut);
+        }
+    }, [dates]);
     return (
         <Box
             mt={10}
@@ -54,7 +62,7 @@ export default function RoomDetail() {
                 ))}
             </Grid>
 
-            <Grid gap={20} templateColumns={"2fr 1fr"} maxW="container.lg">
+            <Grid gap={60} templateColumns={"2fr 1fr"}>
                 <Box>
                     <HStack justifyContent={"space-between"} mt={10}>
                             
