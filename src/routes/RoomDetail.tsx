@@ -2,9 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import { getRoom, getRoomReviews } from "./api";
+import { checkBooking, getRoom, getRoomReviews } from "./api";
 import { IReview, IRoomDetail } from "../types";
-import { Avatar, Box, Container, Grid, GridItem, HStack, Heading, Image, Skeleton, Text, VStack } from "@chakra-ui/react";
+import { Avatar, Box, Button, Container, Grid, GridItem, HStack, Heading, Image, Skeleton, Text, VStack } from "@chakra-ui/react";
 import { FaStar } from "react-icons/fa";
 import { useEffect, useState } from "react";
 
@@ -16,14 +16,15 @@ export default function RoomDetail() {
     const handleDateChange = (value: any) => {
         setDates(value);
     };
-    useEffect(() => {
-        if (dates) {
-            const [fisrtDate, secondDate] = dates;
-            const [checkIn] = fisrtDate.toISOString().split("T");
-            const [checkOut] = secondDate.toISOString().split("T");
-            console.log(checkIn, checkOut);
-        }
-    }, [dates]);
+    const { data: checkBookingData, isLoading: isCheckBooking } = useQuery([
+        "check",
+        roomPk,
+        dates,
+    ], checkBooking, {
+        cacheTime: 0,
+        enabled: dates !== undefined,
+    });
+    
     return (
         <Box
             mt={10}
@@ -79,7 +80,15 @@ export default function RoomDetail() {
                         minDetail="month"
                         minDate={new Date()}
                         maxDate={new Date(Date.now() + (60*60*24*7*4*6*1000))}
-                        selectRange />
+                        selectRange
+                    />
+                    <Button
+                        disabled={!checkBookingData?.ok}
+                        isLoading={isCheckBooking} mt={5} w="100%" colorScheme={"red"}>
+                        Make booking
+                    </Button>
+                    {!isCheckBooking && !checkBookingData?.ok ? 
+                        <Text color="red.500">Can't book on those dates, sorry</Text> : null}
                 </Box>
             </Grid>
 

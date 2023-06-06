@@ -130,3 +130,18 @@ export const createPhoto = ({ description, file, roomPk }: ICreatePhotoVariables
             "X-CSRFToken": Cookie.get("csrftoken") || "",
         },
     }).then((response) => response.data);
+
+
+type CheckBookingQueryKey = [string, string?, Date[]?];
+
+export const checkBooking = ({ queryKey }: QueryFunctionContext<CheckBookingQueryKey>) => {
+    const [_, roomPk, dates] = queryKey;
+    if (dates) {
+        const [fisrtDate, secondDate] = dates;
+        const [checkIn] = fisrtDate.toISOString().split("T");
+        const [checkOut] = secondDate.toISOString().split("T");
+        return instance.get(
+            `rooms/${roomPk}/bookings/check?check_in=${checkIn}&check_out=${checkOut}`)
+            .then((response) => response.data);
+    }
+};
