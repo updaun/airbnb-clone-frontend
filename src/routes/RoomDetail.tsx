@@ -65,33 +65,6 @@ export default function RoomDetail() {
 
             <Grid gap={60} templateColumns={"2fr 1fr"}>
                 <Box>
-                    <HStack justifyContent={"space-between"} mt={10}>
-                            
-                    </HStack>
-                    <Box mt={10}>
-
-                    </Box>
-                </Box>
-                <Box pt={10}>
-                    <Calendar
-                        onChange={handleDateChange}
-                        prev2Label={null}
-                        next2Label={null}
-                        minDetail="month"
-                        minDate={new Date()}
-                        maxDate={new Date(Date.now() + (60*60*24*7*4*6*1000))}
-                        selectRange
-                    />
-                    <Button
-                        disabled={!checkBookingData?.ok}
-                        isLoading={isCheckBooking} mt={5} w="100%" colorScheme={"red"}>
-                        Make booking
-                    </Button>
-                    {!isCheckBooking && !checkBookingData?.ok ? 
-                        <Text color="red.500">Can't book on those dates, sorry</Text> : null}
-                </Box>
-            </Grid>
-
 
             <HStack width={"40%"} justifyContent={"space-between"} mt={10}>
                 <VStack alignItems={"flex-start"}>
@@ -138,6 +111,26 @@ export default function RoomDetail() {
                 </Grid>
                 </Container>
             </Box>
+        </Box>
+        <Box pt={10}>
+                    <Calendar
+                        onChange={handleDateChange}
+                        prev2Label={null}
+                        next2Label={null}
+                        minDetail="month"
+                        minDate={new Date()}
+                        maxDate={new Date(Date.now() + (60*60*24*7*4*6*1000))}
+                        selectRange
+                    />
+                    <Button
+                        disabled={!checkBookingData?.ok}
+                        isLoading={isCheckBooking} mt={5} w="100%" colorScheme={"red"}>
+                        Make booking
+                    </Button>
+                    {!isCheckBooking && !checkBookingData?.ok ? 
+                        <Text color="red.500">Can't book on those dates, sorry</Text> : null}
+                </Box>
+            </Grid>
         </Box>
     )
 }
