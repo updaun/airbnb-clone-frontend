@@ -7,6 +7,7 @@ import { IReview, IRoomDetail } from "../types";
 import { Avatar, Box, Button, Container, Grid, GridItem, HStack, Heading, Image, Skeleton, Text, VStack } from "@chakra-ui/react";
 import { FaStar } from "react-icons/fa";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 
 export default function RoomDetail() {
     const { roomPk } = useParams();
@@ -33,6 +34,9 @@ export default function RoomDetail() {
                 lg: 40,
             }}
         >
+            <Helmet>
+                <title>{data?data.name : "Loading..."}</title>
+            </Helmet>
             <Skeleton height={"43px"} width={"40%"} isLoaded={!isLoading}>
                 <Heading>{ data?.name }</Heading>
             </Skeleton>
